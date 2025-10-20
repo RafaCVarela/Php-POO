@@ -1,33 +1,94 @@
 <?php
 
-// A classe pessoa, cada pessoa tem um nome e uma idade, também, uma pessoa é capaz de falar.
-class Pessoa
-{
-    // Atributos
-    public string $nome;
-    public int $idade;
+// Uma classe para Jogos
 
-    // Métodos
-    public function falar()
+class Jogo
+{
+    // Inicialização de cada objeto com o método mágico __construct
+    public function __construct(
+        private string $nome,
+        private string $data_de_lancamento,
+        private string $genero,
+        public array $jogos_da_franquia = [],
+    )
     {
-        echo "Meu nome é " . $this->nome . " e eu tenho " . $this->idade . " anos de idade.\n";
+        $this->nome = $nome;
+        $this->data_de_lancamento = $data_de_lancamento;
+        $this->genero = $genero;
+    }
+
+    public function vitrine()
+    {
+        echo "O {$this->nome} foi lançado {$this->data_de_lancamento}, ";
+        echo "seu gênero é o {$this->genero}.\n";
+    }
+
+    public function addJogoDaFranquia(string $title)
+    {
+        $this->jogos_da_franquia[] = $title;
+    }
+
+    public function shuffle()
+    {
+        shuffle($this->jogos_da_franquia);
     }
 }
 
-// Instanciamento de uma nova pessoa
-$rafael = new Pessoa();
 
-// Definindo seus atributos
-$rafael->nome = 'Rafael Costa Varela';
-$rafael->idade = 24;
+// Novo jogo, o FinalFantasy, qual eu não sei
+$finalFantasy = new Jogo("Final Fantasy", "2008", "JRPG");
+$finalFantasy->vitrine();
 
-// Chamando o método, sua ação
-$rafael->falar();
+// Outro jogo, o God of War
+$gow = new Jogo("God of War", "2006", "HackingSlash");
+$gow->vitrine();
 
-// Mesmo processo para um novo objeto
-$marcelo = new Pessoa();
+// Adicionar jogos da franquia
 
-$marcelo->nome = 'Marcelo Guimarães Varela Filho';
-$marcelo->idade = 27;
+$finalFantasy->addJogoDaFranquia("Final Fantasay VII - Part I");
+$finalFantasy->addJogoDaFranquia("Final Fantasay VII - Part II");
+$finalFantasy->addJogoDaFranquia("Final Fantasay XVI");
 
-$marcelo->falar();
+$gow->addJogoDaFranquia("God Of War 2005");
+$gow->addJogoDaFranquia("God Of War II");
+$gow->addJogoDaFranquia("God Of War III");
+$gow->addJogoDaFranquia("God Of War 2018");
+$gow->addJogoDaFranquia("God Of War Ragnarok");
+
+
+// Mostrar os jogos das respectivas franquias
+$franquiaFinalFantasy = $finalFantasy->jogos_da_franquia;
+
+echo "\nFranquias, primeiro Final Fantasy depois God of War:\n";
+
+foreach($franquiaFinalFantasy as $jogo){
+    echo $jogo . "\n";
+}
+
+$franquiaGow = $gow->jogos_da_franquia;
+foreach($franquiaGow as $jogo){
+    echo $jogo . "\n";
+}
+
+echo "\n\n";
+
+echo "Vamos bagunçar um pouco a ordem das arrays\n\n";
+
+// Vamos imprimir os jogos
+var_dump($finalFantasy->jogos_da_franquia);
+echo "\n\n";
+
+// Vamos mudar a ordem um pouco
+$finalFantasy->shuffle();
+
+// Vamos imprimir os jogos de novo
+var_dump($finalFantasy->jogos_da_franquia);
+echo "\n\n";
+
+var_dump($gow->jogos_da_franquia);
+echo "\n\n";
+
+$gow->shuffle();
+echo "\n\n";
+
+var_dump($gow->jogos_da_franquia);
